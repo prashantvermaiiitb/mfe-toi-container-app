@@ -2,6 +2,9 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
+const isLocalDevBuild = process.env.NODE_ENV !== 'production';
+const remoteEntryUrlDomain = isLocalDevBuild ? 'http://localhost:9001/' : 'https://mfe-home-47h5z28h9-prashantvermaiiitb.vercel.app/'
+
 module.exports = {
     //from which file webpack should start the bundling process.
     entry: './index.js',
@@ -38,7 +41,7 @@ module.exports = {
             name: 'containerApp',
             // remotes property where in we will be mentioning key-value pair
             remotes :{
-                'Home': 'homeApp@http://localhost:9001/remoteEntry.js'
+                'Home': `homeApp@${remoteEntryUrlDomain}remoteEntry.js`
             },
             shared: {
                 'react': {
